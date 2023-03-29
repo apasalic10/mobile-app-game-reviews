@@ -11,7 +11,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var gameListView: RecyclerView
     private lateinit var gameListAdapter: GameListAdapter
-    private var gameList =  getAll()
+    private var gameList =  GameData.getAll()
     private lateinit var searchButton : Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
                 gameListAdapter.updateMovies(gameList)
             }
             else{
-                val searchGame = getDetails(searchText.text.toString())
+                val searchGame = GameData.getDetails(searchText.text.toString())
 
                 if(searchGame === null){
                     gameListAdapter.updateMovies(listOf())
