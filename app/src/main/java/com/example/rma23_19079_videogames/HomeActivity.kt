@@ -1,5 +1,6 @@
 package com.example.rma23_19079_videogames
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -7,7 +8,7 @@ import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
 
     private lateinit var gameListView: RecyclerView
     private lateinit var gameListAdapter: GameListAdapter
@@ -25,11 +26,12 @@ class MainActivity : AppCompatActivity() {
             false
         )
 
-        gameListAdapter = GameListAdapter(listOf())
+        gameListAdapter = GameListAdapter(listOf())  { game -> showMovieDetails(game) }
         gameListView.adapter = gameListAdapter
         gameListAdapter.updateMovies(gameList)
 
         val homeButton = findViewById<Button>(R.id.home_button)
+        val detailsButton = findViewById<Button>(R.id.details_button)
         homeButton.isEnabled = false
 
         searchButton = findViewById(R.id.search_button)
@@ -51,5 +53,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        val extras = intent.extras
+
+        if(extras != null){
+            detailsButton.setOnClickListener {
+                GameData.getDetails(extras.getString("game_title",""))
+                    ?.let { it1 -> showMovieDetails(it1) }
+            }
+        }
+        else{
+            detailsButton.isEnabled = false
+        }
+    }
+
+    private fun showMovieDetails(game: Game) {
+        val intent = Intent(this, GameDetailsActivity::class.java).apply {
+            putExtra("game_title", game.title)
+        }
+        startActivity(intent)
     }
 }

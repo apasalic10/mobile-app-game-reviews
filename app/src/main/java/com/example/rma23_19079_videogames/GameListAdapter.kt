@@ -1,16 +1,19 @@
 package com.example.rma23_19079_videogames
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class GameListAdapter(
-    private var games : List<Game>) : RecyclerView.Adapter<GameListAdapter.GameViewHolder> () {
+    private var games : List<Game>,
+    private val onItemClicked: (game:Game) -> Unit) : RecyclerView.Adapter<GameListAdapter.GameViewHolder> () {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GameViewHolder {
         val view = LayoutInflater
@@ -26,6 +29,8 @@ class GameListAdapter(
         holder.releaseDate.text = games[position].releaseDate;
         holder.gamePlatform.text = games[position].platform;
         holder.gameRating.text = games[position].rating.toString();
+
+        holder.itemView.setOnClickListener{ onItemClicked(games[position]) }
     }
 
     fun updateMovies(movies: List<Game>) {

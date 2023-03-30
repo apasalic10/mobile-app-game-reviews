@@ -3,26 +3,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:context=".GameDetailsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/logo_image"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <Button
+            android:id="@+id/home_button"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="1"
+            android:text="Home" />
+
+        <Button
+            android:id="@+id/details_button"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"
+            android:text="Details" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/game_title_textview"
         android:layout_width="match_parent"
         android:layout_height="30dp"
-        android:layout_marginTop="15dp"
-        android:text="TextView"
+        android:layout_marginTop="7dp"
         android:gravity="center"
-        android:textStyle="bold"
-        android:textSize="17dp"/>
+        android:text="TextView"
+        android:textSize="17dp"
+        android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/cover_imageview"
         android:layout_width="match_parent"
-        android:layout_height="130dp"
+        android:layout_height="150dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        app:srcCompat="@mipmap/ic_launcher"
-        android:gravity="center"/>
+        android:gravity="center"
+        app:srcCompat="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/platform_textview"
@@ -41,9 +74,9 @@
     <TextView
         android:id="@+id/esrb_rating_textview"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="TextView"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="TextView" />
 
     <TextView
         android:id="@+id/developer_textview"
@@ -69,7 +102,14 @@
     <TextView
         android:id="@+id/description_textview"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="TextView"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:text="TextView" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:textAlignment="center"/>
 </LinearLayout>
