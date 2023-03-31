@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
 class GameDetailsActivity : AppCompatActivity() {
@@ -24,6 +26,9 @@ class GameDetailsActivity : AppCompatActivity() {
     private lateinit var gameDescription : TextView
     private lateinit var homeButton: Button
     private lateinit var detailsButton: Button
+    private lateinit var impressionListView : RecyclerView
+    private lateinit var impressionListAdapter: GameImpressionAdapter
+
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +56,16 @@ class GameDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        impressionListView = findViewById(R.id.impression_list)
+        impressionListView.layoutManager = LinearLayoutManager(
+            this,
+            LinearLayoutManager.VERTICAL,
+            false
+        )
+
+        impressionListAdapter = GameImpressionAdapter(listOf())
+        impressionListView.adapter = impressionListAdapter
+
         val extras = intent.extras
         if(extras != null){
             game = GameData.getDetails(extras.getString("game_title",""))!!
@@ -59,7 +74,7 @@ class GameDetailsActivity : AppCompatActivity() {
         else{
             finish()
         }
-
+        impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
 
     }
 

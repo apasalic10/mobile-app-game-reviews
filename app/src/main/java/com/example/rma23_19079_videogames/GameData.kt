@@ -68,5 +68,22 @@ class GameData {
 
             return null;
         }
+
+        fun getImpressionsOfGame(title : String) : ArrayList<UserImpression> {
+            var impressions  = ArrayList<UserImpression>()
+            for(g : Game in getAll()){
+                if(g.title.equals(title)){
+                    for(impression : UserImpression in g.userImpressions){
+                        impressions.add(impression)
+                    }
+                }
+            }
+
+            impressions.sortByDescending {
+                it.timestamp
+            }
+
+            return impressions;
+        }
     }
 }
