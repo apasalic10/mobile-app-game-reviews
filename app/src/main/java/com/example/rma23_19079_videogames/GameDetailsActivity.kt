@@ -56,6 +56,8 @@ class GameDetailsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+
         impressionListView = findViewById(R.id.impression_list)
         impressionListView.layoutManager = LinearLayoutManager(
             this,
@@ -88,5 +90,12 @@ class GameDetailsActivity : AppCompatActivity() {
         gameGenre.text = game.genre
         gameDescription.text = game.description
         Picasso.get().load(game.coverImage).into(gameCoverImage)
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, HomeActivity::class.java).apply {
+            putExtra("game_title",game.title)
+        }
+        startActivity(intent)
     }
 }
