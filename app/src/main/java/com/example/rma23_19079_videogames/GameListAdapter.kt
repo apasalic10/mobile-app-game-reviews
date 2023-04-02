@@ -1,14 +1,9 @@
 package com.example.rma23_19079_videogames
 
-import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
 class GameListAdapter(
@@ -40,7 +35,7 @@ class GameListAdapter(
 
     inner class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val gameTitle : TextView = itemView.findViewById(R.id.game_title_textview)
-        val releaseDate : TextView = itemView.findViewById(R.id.game_release_date_textview)
+        val releaseDate : TextView = itemView.findViewById(R.id.release_date)
         val gamePlatform : TextView = itemView.findViewById(R.id.game_platform_textview)
         val gameRating : TextView = itemView.findViewById(R.id.game_rating_textview)
     }

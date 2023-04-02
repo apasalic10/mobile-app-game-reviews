@@ -3,7 +3,6 @@ package com.example.rma23_19079_videogames
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
@@ -58,7 +57,7 @@ class GameDetailsActivity : AppCompatActivity() {
 
 
 
-        impressionListView = findViewById(R.id.impression_list)
+        impressionListView = findViewById(R.id.game_list)
         impressionListView.layoutManager = LinearLayoutManager(
             this,
             LinearLayoutManager.VERTICAL,
