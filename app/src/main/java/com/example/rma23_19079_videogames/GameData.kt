@@ -1,6 +1,7 @@
 package com.example.rma23_19079_videogames
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 class GameData {
     companion object{
@@ -67,6 +68,17 @@ class GameData {
             }
 
             return null;
+        }
+
+        fun getListOfGames(title : String) : ArrayList<Game>{
+            var games = ArrayList<Game>()
+            for(g : Game in getAll()){
+                if(g.title.toLowerCase().contains(title.toLowerCase())){
+                    games.add(g)
+                }
+            }
+
+            return games;
         }
 
         fun getImpressionsOfGame(title : String) : ArrayList<UserImpression> {

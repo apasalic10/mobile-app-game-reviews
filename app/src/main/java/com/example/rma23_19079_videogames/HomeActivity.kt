@@ -42,13 +42,13 @@ class HomeActivity : AppCompatActivity() {
                 gameListAdapter.updateMovies(gameList)
             }
             else{
-                val searchGame = GameData.getDetails(searchText.text.toString())
+                val searchGame = GameData.getListOfGames(searchText.text.toString())
 
-                if(searchGame === null){
+                if(searchGame.isEmpty()){
                     gameListAdapter.updateMovies(listOf())
                 }
                 else{
-                    gameListAdapter.updateMovies(listOf(searchGame))
+                    gameListAdapter.updateMovies(searchGame)
                 }
             }
         }
