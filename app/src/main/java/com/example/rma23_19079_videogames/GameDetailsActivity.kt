@@ -60,7 +60,7 @@ class GameDetailsActivity : AppCompatActivity() {
         impressionListView = findViewById(R.id.game_list)
         impressionListView.layoutManager = LinearLayoutManager(
             this,
-            LinearLayoutManager.HORIZONTAL,
+            LinearLayoutManager.VERTICAL,
             false
         )
 
