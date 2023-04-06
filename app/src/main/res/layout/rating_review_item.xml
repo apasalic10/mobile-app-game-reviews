@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:numStars="5"
-            android:paddingTop="8dp" />
+            android:paddingTop="8dp"
+            android:isIndicator="true"/>
 
 
     </LinearLayout>
