@@ -73,7 +73,7 @@ class GameData {
         fun getListOfGames(title : String) : ArrayList<Game>{
             var games = ArrayList<Game>()
             for(g : Game in getAll()){
-                if(g.title.toLowerCase().contains(title.toLowerCase())){
+                if(g.title.toLowerCase().startsWith(title.toLowerCase())){
                     games.add(g)
                 }
             }
