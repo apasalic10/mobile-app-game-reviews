@@ -5,12 +5,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
 
-    private lateinit var gameListView: RecyclerView
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.home_activity)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val navView: BottomNavigationView = findViewById(R.id.bottomNavigation)
+        navView.setupWithNavController(navController)
+    }
+
+    /*private lateinit var gameListView: RecyclerView
     private lateinit var gameListAdapter: GameListAdapter
     private var gameList =  GameData.getAll()
     private lateinit var searchButton : Button
@@ -71,5 +83,5 @@ class HomeActivity : AppCompatActivity() {
             putExtra("game_title", game.title)
         }
         startActivity(intent)
-    }
+    }*/
 }
