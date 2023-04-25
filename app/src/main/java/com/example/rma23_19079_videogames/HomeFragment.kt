@@ -1,6 +1,7 @@
 package com.example.rma23_19079_videogames
 
 import android.annotation.SuppressLint
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -33,10 +35,6 @@ class HomeFragment : Fragment() {
         gameListView.adapter = gameListAdapter
         gameListAdapter.updateMovies(gameList)
 
-        val homeButton = view.findViewById<Button>(R.id.home_button)
-        val detailsButton = view.findViewById<Button>(R.id.details_button)
-        homeButton.isEnabled = false
-
         searchButton = view.findViewById(R.id.search_button)
         searchButton.setOnClickListener {
             val searchText = view.findViewById<EditText>(R.id.search_query_edittext)
@@ -56,36 +54,44 @@ class HomeFragment : Fragment() {
             }
         }
 
-        val title = arguments?.getString("game_title").toString()
-        navigation = requireActivity().findViewById(R.id.bottomNavigation)
-        navigation.menu.getItem(0).isEnabled = false
-        navigation.menu.getItem(0).isCheckable = false
 
-        if(arguments != null){
-            detailsButton.setOnClickListener {
-                GameData.getDetails(title)
-                    ?.let { it1 -> showMovieDetails(it1) }
-            }
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // In landscape
+        } else {
+            val homeButton = view.findViewById<Button>(R.id.home_button)
+            val detailsButton = view.findViewById<Button>(R.id.details_button)
+            homeButton.isEnabled = false
 
-            navigation.menu.getItem(1).isEnabled = true
-            navigation.menu.getItem(1).isCheckable = true
-            navigation.setOnItemSelectedListener{
-                when(it.itemId){
-                    R.id.gameDetailsItem -> {
-                        showMovieDetails(GameData.getDetails(title)!!)
-                        true
+
+            val title = arguments?.getString("game_title").toString()
+            navigation = requireActivity().findViewById(R.id.bottomNavigation)
+            navigation.menu.getItem(0).isEnabled = false
+            navigation.menu.getItem(0).isCheckable = false
+
+            if(arguments != null){
+                detailsButton.setOnClickListener {
+                    GameData.getDetails(title)
+                        ?.let { it1 -> showMovieDetails(it1) }
+                }
+
+                navigation.menu.getItem(1).isEnabled = true
+                navigation.menu.getItem(1).isCheckable = true
+                navigation.setOnItemSelectedListener{
+                    when(it.itemId){
+                        R.id.gameDetailsItem -> {
+                            showMovieDetails(GameData.getDetails(title)!!)
+                            true
+                        }
+                        else -> {true}
                     }
-                    else -> {true}
                 }
             }
+            else{
+                detailsButton.isEnabled = false
+                navigation.menu.getItem(1).isEnabled = false
+            }
         }
-        else{
-            detailsButton.isEnabled = false
-            navigation.menu.getItem(1).isEnabled = false
-        }
-
-
-
 
 
         return view
@@ -93,8 +99,19 @@ class HomeFragment : Fragment() {
 
 
     private fun showMovieDetails(game: Game) {
+
         val bundle = bundleOf("game_title" to game.title)
-        requireView().findNavController().navigate(R.id.action_homeFragment_to_gameDetailsFragment,bundle)
+
+        if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            val gameDetailsFragment = GameDetailsFragment()
+            gameDetailsFragment.arguments = bundle
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container_details, gameDetailsFragment)
+                .commit()
+        } else {
+            requireView().findNavController().navigate(R.id.action_homeFragment_to_gameDetailsFragment, bundle)
+        }
     }
 
 }

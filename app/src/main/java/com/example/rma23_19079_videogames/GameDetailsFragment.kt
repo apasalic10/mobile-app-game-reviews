@@ -1,6 +1,7 @@
 package com.example.rma23_19079_videogames
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -52,40 +54,60 @@ class GameDetailsFragment : Fragment() {
         gameGenre = view.findViewById(R.id.genre_textview)
         gameDescription = view.findViewById(R.id.description_textview)
 
-        homeButton = view.findViewById(R.id.home_button)
-        detailsButton = view.findViewById(R.id.details_button)
-        detailsButton.isEnabled = false
-
         impressionListView = view.findViewById(R.id.game_list)
         impressionListView.layoutManager = GridLayoutManager(activity, 1)
         impressionListAdapter = GameImpressionAdapter(listOf())
         impressionListView.adapter = impressionListAdapter
 
+
         val title = arguments?.getString("game_title").toString()
-        game = GameData.getDetails(title)!!
-        populateDetails()
 
-        impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
+        val orientation = resources.configuration.orientation
+        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            if(arguments == null){
+                game = GameData.getAll().get(0)
+                populateDetails()
+                impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
+            }
+            else {
+                game = GameData.getDetails(title)!!
+                populateDetails()
 
-        homeButton.setOnClickListener {
-            showHomeScreen(GameData.getDetails(game.title)!!)
-        }
+                impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
+            }
 
-        navigation = requireActivity().findViewById(R.id.bottomNavigation)
-        navigation.menu.getItem(1).isEnabled = false
-        navigation.menu.getItem(1).isCheckable = false
-        navigation.menu.getItem(0).isEnabled = true
-        navigation.menu.getItem(0).isCheckable = true
+        } else {
 
-        navigation.setOnItemSelectedListener{
-            when(it.itemId){
-                R.id.homeItem-> {
-                    showHomeScreen(GameData.getDetails(game.title)!!)
-                    true
+            homeButton = view.findViewById(R.id.home_button)
+            detailsButton = view.findViewById(R.id.details_button)
+            detailsButton.isEnabled = false
+
+            game = GameData.getDetails(title)!!
+            populateDetails()
+
+            impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
+
+            homeButton.setOnClickListener {
+                showHomeScreen(GameData.getDetails(game.title)!!)
+            }
+
+            navigation = requireActivity().findViewById(R.id.bottomNavigation)
+            navigation.menu.getItem(1).isEnabled = false
+            navigation.menu.getItem(1).isCheckable = false
+            navigation.menu.getItem(0).isEnabled = true
+            navigation.menu.getItem(0).isCheckable = true
+
+            navigation.setOnItemSelectedListener{
+                when(it.itemId){
+                    R.id.homeItem-> {
+                        showHomeScreen(GameData.getDetails(game.title)!!)
+                        true
+                    }
+                    else -> {true}
                 }
-                else -> {true}
             }
         }
+
 
         return view;
     }
