@@ -16,8 +16,8 @@ class HomeActivity : AppCompatActivity() {
 
         val config: Configuration = baseContext.resources.configuration
         if (config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            supportFragmentManager.beginTransaction().replace(R.id.fragment_container_home, HomeFragment()).commit()
             supportFragmentManager.beginTransaction().replace(R.id.fragment_container_details, GameDetailsFragment()).commit()
+            supportFragmentManager.beginTransaction().replace(R.id.fragment_container_home, HomeFragment()).commit()
         } else {
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
             val navController = navHostFragment.navController
