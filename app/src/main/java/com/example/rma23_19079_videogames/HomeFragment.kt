@@ -11,9 +11,10 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rma23_19079_videogames.GameData.Companion.getDetails
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -29,7 +30,7 @@ class HomeFragment : Fragment() {
         var view = inflater.inflate(R.layout.fragment_home, container, false)
         gameListView = view.findViewById(R.id.game_list)
         gameListView.layoutManager = GridLayoutManager(activity, 1)
-        gameListAdapter = GameListAdapter(listOf())  { game -> showMovieDetails(game) }
+        gameListAdapter = GameListAdapter(listOf())  { game -> showGameDetails(game) }
 
 
         gameListView.adapter = gameListAdapter
@@ -56,49 +57,42 @@ class HomeFragment : Fragment() {
 
 
         val orientation = resources.configuration.orientation
-        if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // In landscape
-        } else {
-            val homeButton = view.findViewById<Button>(R.id.home_button)
-            val detailsButton = view.findViewById<Button>(R.id.details_button)
-            homeButton.isEnabled = false
-
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
             val title = arguments?.getString("game_title").toString()
-            navigation = requireActivity().findViewById(R.id.bottomNavigation)
+            navigation = requireActivity().findViewById(R.id.bottom_nav)
             navigation.menu.getItem(0).isEnabled = false
-            navigation.menu.getItem(0).isCheckable = false
+            navigation.menu.getItem(0).isCheckable = true
 
-            if(arguments != null){
-                detailsButton.setOnClickListener {
-                    GameData.getDetails(title)
-                        ?.let { it1 -> showMovieDetails(it1) }
-                }
-
+            if (arguments != null) {
                 navigation.menu.getItem(1).isEnabled = true
                 navigation.menu.getItem(1).isCheckable = true
-                navigation.setOnItemSelectedListener{
-                    when(it.itemId){
+                navigation.setOnItemSelectedListener {
+                    when (it.itemId) {
                         R.id.gameDetailsItem -> {
-                            showMovieDetails(GameData.getDetails(title)!!)
+                            showGameDetails(GameData.getDetails(title)!!)
                             true
                         }
-                        else -> {true}
+                        else -> {
+                            true
+                        }
                     }
                 }
-            }
-            else{
-                detailsButton.isEnabled = false
+            } else {
                 navigation.menu.getItem(1).isEnabled = false
             }
+
+            return view;
         }
+
+
 
 
         return view
     }
 
 
-    private fun showMovieDetails(game: Game) {
+    private fun showGameDetails(game: Game) {
 
         val bundle = bundleOf("game_title" to game.title)
 

@@ -21,8 +21,9 @@ class HomeActivity : AppCompatActivity() {
         } else {
             val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
             val navController = navHostFragment.navController
-            val navView: BottomNavigationView = findViewById(R.id.bottomNavigation)
+            val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
             navView.setupWithNavController(navController)
+            navController.navigate(R.id.homeFragment)
         }
     }
 

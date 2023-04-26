@@ -1,6 +1,5 @@
 package com.example.rma23_19079_videogames
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,7 +11,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
-import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -78,24 +76,18 @@ class GameDetailsFragment : Fragment() {
 
         } else {
 
-            homeButton = view.findViewById(R.id.home_button)
-            detailsButton = view.findViewById(R.id.details_button)
-            detailsButton.isEnabled = false
+            if(arguments != null){
+                game = GameData.getDetails(title)!!
+                populateDetails()
 
-            game = GameData.getDetails(title)!!
-            populateDetails()
-
-            impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
-
-            homeButton.setOnClickListener {
-                showHomeScreen(GameData.getDetails(game.title)!!)
+                impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
             }
 
-            navigation = requireActivity().findViewById(R.id.bottomNavigation)
+            navigation = requireActivity().findViewById(R.id.bottom_nav)
             navigation.menu.getItem(1).isEnabled = false
-            navigation.menu.getItem(1).isCheckable = false
+            navigation.menu.getItem(1).isCheckable = true
             navigation.menu.getItem(0).isEnabled = true
-            navigation.menu.getItem(0).isCheckable = true
+            navigation.menu.getItem(0).isCheckable = false
 
             navigation.setOnItemSelectedListener{
                 when(it.itemId){
