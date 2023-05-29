@@ -1,4 +1,4 @@
-package com.example.rma23_19079_videogames
+package ba.etf.rma23.projekat
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rma23_19079_videogames.R
 
 class GameImpressionAdapter ( 
     private var impressions : List<UserImpression> ) : RecyclerView.Adapter<GameImpressionAdapter.UserImpressionHolder> ()

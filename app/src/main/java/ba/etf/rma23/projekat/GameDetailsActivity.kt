@@ -1,4 +1,4 @@
-package com.example.rma23_19079_videogames
+package ba.etf.rma23.projekat
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -9,6 +9,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rma23_19079_videogames.R
+
 import com.squareup.picasso.Picasso
 
 class GameDetailsActivity : AppCompatActivity() {
@@ -49,7 +51,7 @@ class GameDetailsActivity : AppCompatActivity() {
         detailsButton.isEnabled = false
 
         homeButton.setOnClickListener {
-            val intent = Intent(this, HomeActivity::class.java).apply {
+            val intent = Intent(this, MainActivity::class.java).apply {
                 putExtra("game_title",game.title)
             }
             startActivity(intent)
@@ -69,7 +71,7 @@ class GameDetailsActivity : AppCompatActivity() {
 
         val extras = intent.extras
         if(extras != null){
-            game = GameData.getDetails(extras.getString("game_title",""))!!
+            game = GameData.getDetails(extras.getString("game_title", ""))!!
             populateDetails()
         }
         else{
@@ -92,7 +94,7 @@ class GameDetailsActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        val intent = Intent(this, HomeActivity::class.java).apply {
+        val intent = Intent(this, MainActivity::class.java).apply {
             putExtra("game_title",game.title)
         }
         startActivity(intent)

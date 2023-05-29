@@ -1,4 +1,4 @@
-package com.example.rma23_19079_videogames
+package ba.etf.rma23_19079_videogames
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

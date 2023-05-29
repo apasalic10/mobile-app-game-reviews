@@ -1,4 +1,4 @@
-package com.example.rma23_19079_videogames
+package ba.etf.rma23.projekat
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -13,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.rma23_19079_videogames.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 

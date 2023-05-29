@@ -1,6 +1,5 @@
-package com.example.rma23_19079_videogames
+package ba.etf.rma23.projekat
 
-import java.util.*
 import kotlin.collections.ArrayList
 
 class GameData {
@@ -10,7 +9,8 @@ class GameData {
                 Game("Grand Theft Auto IV", "PlayStation 3",
                     "29 April 2008", 4.1, "https://www.igrandtheftauto.com/img/content/640x0/3618.jpg", "No Rating Summary",
                     "Rockstar North", "Rockstar Games", "Action-adventure", "Grand Theft Auto IV is an action-adventure game played from a third-person perspective. Players complete missions—linear scenarios with set objectives—to progress through the story.",
-                    listOf(UserRating("niko123",1,4.0), UserRating("alme001",2,3.0),
+                    listOf(
+                        UserRating("niko123",1,4.0), UserRating("alme001",2,3.0),
                         UserRating("tony55",3,3.5), UserRating("allen14",4,3.9),
                         UserRating("mike",5,4.0)
                     )
@@ -20,15 +20,20 @@ class GameData {
                     "This is a multiplayer action game in which players can participate in last-man - standing - style shootouts while collecting supplies/weapons/armor around an island.",
                     "PUBG Studios","Krafton, " + " Microsoft Studios (Xbox One), " + " Tencent Games (mobile)",
                     "Battle royale", "PUBG is a player versus player shooter game in which up to one hundred players fight in a battle royale, a type of large - scale last man standing deathmatch where players fight to remain the last alive",
-                    listOf(UserRating("niko123",6,4.0), UserRating("alme001",7,3.0),
+                    listOf(
+                        UserRating("niko123",6,4.0), UserRating("alme001",7,3.0),
                         UserRating("tony55",10,3.0), UserRating("allen14",11,2.0),
-                        UserRating("blackMan",12,3.7))),
+                        UserRating("blackMan",12,3.7)
+                    )),
                 Game("FIFA 23", "PlayStation 5, " +" Windows, " + "Xbox One", "30 September 2022",
                     4.5, "https://fifauteam.com/images/covers/fifa23/standard-cg.webp",
                     "This is a soccer simulation game in which players engage in realistic matches with teams across international leagues.",
                     "Electronic Arts", "EA Sports", "Sports", "FIFA 23 is a football video game published by Electronic Arts.",
-                    listOf(UserReview("philipK0", 14,"This game is very interesting!"), UserRating("anelOsm",13,5.0),
-                    UserRating("veca58",17,3.9),UserRating("allen14",16,4.5), UserRating("alme001",15,3.3))),
+                    listOf(
+                        UserReview("philipK0", 14,"This game is very interesting!"), UserRating("anelOsm",13,5.0),
+                    UserRating("veca58",17,3.9),
+                        UserRating("allen14",16,4.5), UserRating("alme001",15,3.3)
+                    )),
                 Game("Assassin's Creed Valhalla","Playstation 5", "November 10, 2020", 4.9, "https://upload.wikimedia.org/wikipedia/en/f/ff/Assassin%27s_Creed_Valhalla_cover.jpg",
                     "This is an action-adventure game in which players assume the role of a Viking mercenary (Eivor) who travels through England to forge alliances, lead raids, and defeat rival clans/rulers.",
                     "Ubisoft Montreal", "Ubisoft", "Action role-playing", "Assassin's Creed Valhalla is a 2020 action role-playing video game developed by Ubisoft Montreal and published by Ubisoft.",

@@ -1,4 +1,4 @@
-package com.example.rma23_19079_videogames
+package ba.etf.rma23.projekat
 
 data class Game(val title: String,
                 val platform: String,

@@ -1,4 +1,4 @@
-package com.example.rma23_19079_videogames
+package ba.etf.rma23.projekat
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -13,15 +13,14 @@ import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rma23_19079_videogames.GameData.Companion.getDetails
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.example.rma23_19079_videogames.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class HomeFragment : Fragment() {
     private lateinit var gameListView: RecyclerView
     private lateinit var gameListAdapter: GameListAdapter
-    private var gameList =  GameData.getAll()
+    private var gameList = GameData.getAll()
     private lateinit var searchButton : Button
     private lateinit var navigation : BottomNavigationView
 
