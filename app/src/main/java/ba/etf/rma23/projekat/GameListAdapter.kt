@@ -23,7 +23,7 @@ class GameListAdapter(
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         holder.gameTitle.text = games[position].title;
         holder.releaseDate.text = games[position].releaseDate;
-        holder.gamePlatform.text = games[position].platform;
+        holder.gamePlatform.text = games[position].platform.toString();
         holder.gameRating.text = games[position].rating.toString();
 
         holder.itemView.setOnClickListener{ onItemClicked(games[position]) }

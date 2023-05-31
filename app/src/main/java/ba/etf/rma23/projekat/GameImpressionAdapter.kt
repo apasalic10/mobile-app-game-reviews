@@ -40,7 +40,7 @@ class GameImpressionAdapter (
     }
 
 
-    fun updateMovies(impressions: ArrayList<UserImpression>) {
+    fun updateGames(impressions: ArrayList<UserImpression>) {
         this.impressions = impressions
         notifyDataSetChanged()
     }

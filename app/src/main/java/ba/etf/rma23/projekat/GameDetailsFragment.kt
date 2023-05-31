@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
@@ -29,8 +28,6 @@ class GameDetailsFragment : Fragment() {
     private lateinit var gamePublisher: TextView
     private lateinit var gameGenre: TextView
     private lateinit var gameDescription: TextView
-    private lateinit var homeButton: Button
-    private lateinit var detailsButton: Button
     private lateinit var impressionListView: RecyclerView
     private lateinit var impressionListAdapter: GameImpressionAdapter
     private lateinit var navigation : BottomNavigationView
@@ -59,29 +56,29 @@ class GameDetailsFragment : Fragment() {
         impressionListView.adapter = impressionListAdapter
 
 
-        val title = arguments?.getString("game_title").toString()
+        val id : Int? = arguments?.getInt("game_id")
 
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
             if(arguments == null){
                 game = GameData.getAll().get(0)
                 populateDetails()
-                impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
+                impressionListAdapter.updateGames(GameData.getImpressionsOfGame(game.title))
             }
             else {
-                game = GameData.getDetails(title)!!
+                game = GameData.getDetails(id!!)!!
                 populateDetails()
 
-                impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
+                impressionListAdapter.updateGames(GameData.getImpressionsOfGame(game.title))
             }
 
         } else {
 
             if(arguments != null){
-                game = GameData.getDetails(title)!!
+                game = GameData.getDetails(id!!)!!
                 populateDetails()
 
-                impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
+                impressionListAdapter.updateGames(GameData.getImpressionsOfGame(game.title))
             }
 
             navigation = requireActivity().findViewById(R.id.bottom_nav)
@@ -93,7 +90,7 @@ class GameDetailsFragment : Fragment() {
             navigation.setOnItemSelectedListener{
                 when(it.itemId){
                     R.id.homeItem-> {
-                        showHomeScreen(GameData.getDetails(game.title)!!)
+                        showHomeScreen(GameData.getDetails(game.id)!!)
                         true
                     }
                     else -> {true}
@@ -106,20 +103,23 @@ class GameDetailsFragment : Fragment() {
     }
 
     private fun showHomeScreen(game : Game){
-        val bundle = bundleOf("game_title" to game.title)
+        val bundle = bundleOf("game_id" to game.id)
         requireView().findNavController().navigate(R.id.action_gameDetailsFragment_to_homeFragment,bundle)
     }
 
     private fun populateDetails() {
         gameTitle.text = game.title
-        gamePlatform.text = game.platform
+        gamePlatform.text = game.platform.toString()
         gameReleaseDate.text = game.releaseDate
         gameEsrbRating.text = game.esrbRating
         gameDeveloper.text = game.developer
         gamePublisher.text = game.publisher
         gameGenre.text = game.genre
         gameDescription.text = game.description
-        Picasso.get().load(game.coverImage).into(gameCoverImage)
+        if(game.coverImage != ""){
+            Picasso.get().load(game.coverImage).into(gameCoverImage)
+        }
+
     }
 
     /*override fun onBackPressed() {

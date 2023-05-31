@@ -9,12 +9,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import com.example.rma23_19079_videogames.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class HomeFragment : Fragment() {
@@ -39,26 +45,14 @@ class HomeFragment : Fragment() {
         searchButton.setOnClickListener {
             val searchText = view.findViewById<EditText>(R.id.search_query_edittext)
 
-            if(searchText.text.toString().isEmpty()){
-                gameListAdapter.updateMovies(gameList)
-            }
-            else{
-                val searchGame = GameData.getListOfGames(searchText.text.toString())
-
-                if(searchGame.isEmpty()){
-                    gameListAdapter.updateMovies(listOf())
-                }
-                else{
-                    gameListAdapter.updateMovies(searchGame)
-                }
-            }
+            getGamesByName(searchText.text.toString())
         }
 
 
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 
-            val title = arguments?.getString("game_title").toString()
+            val id : Int? = arguments?.getInt("game_id")
             navigation = requireActivity().findViewById(R.id.bottom_nav)
             navigation.menu.getItem(0).isEnabled = false
             navigation.menu.getItem(0).isCheckable = true
@@ -69,7 +63,7 @@ class HomeFragment : Fragment() {
                 navigation.setOnItemSelectedListener {
                     when (it.itemId) {
                         R.id.gameDetailsItem -> {
-                            showGameDetails(GameData.getDetails(title)!!)
+                            showGameDetails(GameData.getDetails(id!!)!!)
                             true
                         }
                         else -> {
@@ -93,7 +87,7 @@ class HomeFragment : Fragment() {
 
     private fun showGameDetails(game: Game) {
 
-        val bundle = bundleOf("game_title" to game.title)
+        val bundle = bundleOf("game_id" to game.id)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             val gameDetailsFragment = GameDetailsFragment()
@@ -105,6 +99,32 @@ class HomeFragment : Fragment() {
         } else {
             requireView().findNavController().navigate(R.id.action_homeFragment_to_gameDetailsFragment, bundle)
         }
+    }
+
+    fun getGamesByName(name: String){
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        // Create a new coroutine on the UI thread
+        scope.launch {
+            // Opcija 1
+            val result : List<Game>? = GamesRepository.getGamesByName(name)
+            // Display result of the network request to the user
+            if(!result.isNullOrEmpty()){
+                onSuccess(result)
+            }
+            else{
+                onError()
+            }
+        }
+    }
+
+    fun onSuccess(games:List<Game>){
+        val toast = Toast.makeText(context, "Games found", Toast.LENGTH_SHORT)
+        toast.show()
+        gameListAdapter.updateMovies(games)
+    }
+    fun onError() {
+        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
+        toast.show()
     }
 
 }

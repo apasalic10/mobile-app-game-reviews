@@ -71,19 +71,19 @@ class GameDetailsActivity : AppCompatActivity() {
 
         val extras = intent.extras
         if(extras != null){
-            game = GameData.getDetails(extras.getString("game_title", ""))!!
+            game = GameData.getDetails(extras.getInt("game_id", 0))!!
             populateDetails()
         }
         else{
             finish()
         }
-        impressionListAdapter.updateMovies(GameData.getImpressionsOfGame(game.title))
+        impressionListAdapter.updateGames(GameData.getImpressionsOfGame(game.title))
 
     }
 
     private fun populateDetails() {
         gameTitle.text = game.title
-        gamePlatform.text = game.platform
+        gamePlatform.text = game.platform.toString()
         gameReleaseDate.text = game.releaseDate
         gameEsrbRating.text = game.esrbRating
         gameDeveloper.text = game.developer
@@ -95,7 +95,7 @@ class GameDetailsActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         val intent = Intent(this, MainActivity::class.java).apply {
-            putExtra("game_title",game.title)
+            putExtra("game_id",game.id)
         }
         startActivity(intent)
     }
