@@ -1,13 +1,14 @@
 package ba.etf.rma23.projekat.data.repositories
 
 import ba.etf.rma23.projekat.Game
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository.getSavedGames
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.RequestBody.Companion.toRequestBody
 
 object GamesRepository {
 
-    var listOfGames : List<Game>? = null
+    var listOfGames : ArrayList<Game> = ArrayList()
 
     suspend fun getGamesByName(name: String) : List<Game>?{
         return withContext(Dispatchers.IO) {
@@ -15,7 +16,7 @@ object GamesRepository {
                 val response = IGDBApiConfig.retrofit.getGamesByName(name)
 
                 if (response.isSuccessful){
-                    listOfGames = response.body()
+                    listOfGames = response.body() as ArrayList<Game>
                     return@withContext response.body()
                 }else{
                     return@withContext emptyList()
@@ -78,5 +79,21 @@ object GamesRepository {
             }
         }
 
+    }
+
+    suspend fun sortGames():List<Game> {
+        return withContext(Dispatchers.IO){
+            try{
+                val favoriteGames = getSavedGames()
+                val allGames = listOfGames.filter { game -> game !in favoriteGames }
+
+                val sortedFavoriteGames = favoriteGames.sortedBy { game -> game.title }
+                val sortedAllGames = allGames.sortedBy { game -> game.title }
+
+                return@withContext sortedFavoriteGames + sortedAllGames
+            }catch (e: Exception){
+                return@withContext emptyList<Game>()
+            }
+        }
     }
 }

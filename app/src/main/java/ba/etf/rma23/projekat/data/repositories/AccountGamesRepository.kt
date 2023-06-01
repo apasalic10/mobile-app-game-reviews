@@ -100,6 +100,27 @@ object AccountGamesRepository {
 
     }
 
+    suspend fun getGamesContainingString(query:String):List<Game>{
+        return withContext(Dispatchers.IO){
+            try{
+                val response = getSavedGames()
+                var new_response: ArrayList<Game> = ArrayList<Game>()
+                for(g:Game in response){
+                    if(g.title.contains(query,true)) {
+                        new_response.add(g)
+                    }
+                }
+                return@withContext new_response
+            }
+
+            catch (exception: Exception){
+                exception.printStackTrace()
+                return@withContext emptyList<Game>()
+            }
+        }
+
+    }
+
 
     fun setAge(age:Int):Boolean{
         if(age < 3 || age > 100) return false

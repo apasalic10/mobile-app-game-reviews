@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         }
     }*/
 
-    fun getUpcoming( ){
+    /*fun getUpcoming( ){
         val scope = CoroutineScope(Job() + Dispatchers.Main)
         // Create a new coroutine on the UI thread
         runBlocking {
@@ -56,6 +56,18 @@ class MainActivity : AppCompatActivity() {
             AccountGamesRepository.setHash("230cb97e-fbfb-4298-87fa-50e1283b893b")
             AccountGamesRepository.setAge(3)
             AccountGamesRepository.removeNonSafe()
+        }
+    }*/
+
+    fun getUpcoming( ){
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        // Create a new coroutine on the UI thread
+        runBlocking {
+            // Opcija 1
+            AccountGamesRepository.setHash("50b2f29f-8e82-4e3d-8eea-2425718bfb32")
+            AccountGamesRepository.setAge(2)
+            var lista: List<Game> = AccountGamesRepository.getGamesContainingString("hitman")
+            print(lista)
         }
     }
 

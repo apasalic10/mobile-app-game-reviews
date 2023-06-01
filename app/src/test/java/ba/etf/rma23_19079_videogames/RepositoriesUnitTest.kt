@@ -89,10 +89,12 @@ class RepositoriesUnitTest {
         assertThat(res.size,CoreMatchers.equalTo(0))
     }
 
-
-
-
-
-
+    @Test
+    fun a7_dodajIgruUOmiljeneISortiraj() = runBlocking {
+        AccountGamesRepository.saveGame(Game(24273,"Age of Empires: The Age of Kings","","",10.0,"","","","","","",listOf<UserImpression>()))
+        GamesRepository.getGamesByName("Age of Empires")
+        var res = GamesRepository.sortGames()
+        assertThat(res.get(0).id,CoreMatchers.equalTo(24273))
+    }
 
 }
