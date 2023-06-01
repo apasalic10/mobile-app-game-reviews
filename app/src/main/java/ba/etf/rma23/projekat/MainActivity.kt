@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         getUpcoming()
     }
 
-    fun getUpcoming( ){
+    /*fun getUpcoming( ){
         val scope = CoroutineScope(Job() + Dispatchers.Main)
         // Create a new coroutine on the UI thread
         runBlocking {
@@ -45,6 +45,17 @@ class MainActivity : AppCompatActivity() {
             for(g: Game in result!!){
                 println(g)
             }
+        }
+    }*/
+
+    fun getUpcoming( ){
+        val scope = CoroutineScope(Job() + Dispatchers.Main)
+        // Create a new coroutine on the UI thread
+        runBlocking {
+            // Opcija 1
+            AccountGamesRepository.setHash("230cb97e-fbfb-4298-87fa-50e1283b893b")
+            AccountGamesRepository.setAge(3)
+            AccountGamesRepository.removeNonSafe()
         }
     }
 

@@ -24,7 +24,12 @@ android {
         }
         debug{
             buildConfigField 'String', "ClientID", "\"y1huk21kw9ecc7o51ovg1su20njgs9\""
+        }
+        debug{
             buildConfigField 'String', "Authorization", "\"Bearer lbmn6d9u7i37ztwacnkx6ovj254dx4\""
+        }
+        debug{
+            buildConfigField 'String', "acHash", "\"230cb97e-fbfb-4298-87fa-50e1283b893b\""
         }
     }
     compileOptions {

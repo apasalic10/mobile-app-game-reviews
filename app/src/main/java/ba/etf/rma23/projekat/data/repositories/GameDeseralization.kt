@@ -55,7 +55,7 @@ class GameDeserialization : JsonDeserializer<Game> {
 
         var esrbRating : String = ""
         if((esrbObject?.get("category")?.asInt ?: 0) == 2){
-            esrbRating = esrbObject?.get("rating")?.asString ?: ""
+            esrbRating = ESRBRating.getGameRating(esrbObject?.get("rating")?.asInt!!).toString()
         }
         else if((esrbObject?.get("category")?.asInt ?: 0) == 1){
             esrbRating = ESRBRating.getGameRating(esrbObject?.get("rating")?.asInt!!).toString()

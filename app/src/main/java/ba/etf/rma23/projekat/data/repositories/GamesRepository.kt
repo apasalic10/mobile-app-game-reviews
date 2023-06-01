@@ -45,4 +45,38 @@ object GamesRepository {
             }
         }
     }
+
+    suspend fun getGamesSafe(name:String):List<Game>{
+        return withContext(Dispatchers.IO){
+            try{
+                if(AccountGamesRepository.age == null){
+                    return@withContext emptyList()
+                }
+                val arg = "fields id, name, platforms.name, first_release_date, age_ratings.rating, age_ratings.category, cover.url, involved_companies, involved_companies.developer, involved_companies.publisher, involved_companies.company.name, genres.name, summary, rating; search \"${name}\";";
+                val response = IGDBApiConfig.retrofit.getGameSafe(arg.toRequestBody())
+
+                if(response.isSuccessful){
+                    val filter:ArrayList<Game> = ArrayList()
+
+                    for(g: Game in response.body()!!){
+                        if( g.esrbRating.equals("")) {
+                            filter.add(g)
+                            continue
+                        }
+                        if(AccountGamesRepository.age!! >= AgeRating.valueOf(g.esrbRating).value  ){
+                            filter.add(g)
+                        }
+
+                    }
+                    return@withContext filter
+                } else{
+                    return@withContext emptyList()
+                }
+            } catch (exception: Exception){
+                exception.printStackTrace()
+                return@withContext emptyList()
+            }
+        }
+
+    }
 }

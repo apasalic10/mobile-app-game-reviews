@@ -67,6 +67,28 @@ class RepositoriesUnitTest {
         assertThat(res, CoreMatchers.hasItem<Game>(Matchers.hasProperty("id",CoreMatchers.equalTo(24273))))
     }
 
+    @Test
+    fun a5_getGamesSafe() = runBlocking {
+        AccountGamesRepository.setAge(10)
+        var res = GamesRepository.getGamesSafe("Hitman")
+        assertThat(res, CoreMatchers.not(CoreMatchers.hasItem<Game>(Matchers.hasProperty("id",CoreMatchers.equalTo(11157)))))
+
+        var res2 = GamesRepository.getGamesByName("Hitman")
+        assertThat(res2, CoreMatchers.hasItem<Game>(Matchers.hasProperty("id",CoreMatchers.equalTo(11157))))
+    }
+
+    @Test
+    fun a6_obrisiIgre() = runBlocking {
+        var res=AccountGamesRepository.getSavedGames()
+        assertThat(res.size,CoreMatchers.equalTo(2))
+        AccountGamesRepository.removeGame(res.get(0).id)
+        res=AccountGamesRepository.getSavedGames()
+        assertThat(res.size,CoreMatchers.equalTo(1))
+        AccountGamesRepository.removeGame(res.get(0).id)
+        res=AccountGamesRepository.getSavedGames()
+        assertThat(res.size,CoreMatchers.equalTo(0))
+    }
+
 
 
 

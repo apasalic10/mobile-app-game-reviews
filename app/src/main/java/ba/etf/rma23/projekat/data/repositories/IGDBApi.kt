@@ -32,4 +32,15 @@ interface IGDBApi {
     suspend fun getGameById(
         @Body req: RequestBody
     ): Response<List<Game>>
+
+
+    @Headers(
+        "Client-ID: ${BuildConfig.ClientID}",
+        "Authorization: ${BuildConfig.Authorization}",
+        "Content-Type: application/json"
+    )
+    @POST("games")
+    suspend fun getGameSafe(
+        @Body req: RequestBody
+    ): Response<List<Game>>
 }
