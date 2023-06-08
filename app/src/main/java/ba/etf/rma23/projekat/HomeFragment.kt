@@ -9,37 +9,41 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
 import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import com.example.rma23_19079_videogames.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 class HomeFragment : Fragment() {
     private lateinit var gameListView: RecyclerView
     private lateinit var gameListAdapter: GameListAdapter
-    private var gameList = GameData.getAll()
+    private var gameList = listOf<Game>()
     private lateinit var searchButton : Button
     private lateinit var navigation : BottomNavigationView
+    private lateinit var sortGames : ImageButton
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater.inflate(R.layout.fragment_home, container, false)
         gameListView = view.findViewById(R.id.game_list)
+        sortGames = view.findViewById(R.id.sortGamesButton)
         gameListView.layoutManager = GridLayoutManager(activity, 1)
         gameListAdapter = GameListAdapter(listOf())  { game -> showGameDetails(game) }
 
 
         gameListView.adapter = gameListAdapter
-        gameListAdapter.updateMovies(gameList)
+        runBlocking {
+            gameList = AccountGamesRepository.getSavedGames()
+        }
+        gameListAdapter.updateGames(gameList)
 
         searchButton = view.findViewById(R.id.search_button)
         searchButton.setOnClickListener {
@@ -48,6 +52,14 @@ class HomeFragment : Fragment() {
             getGamesByName(searchText.text.toString())
         }
 
+        sortGames.setOnClickListener {
+            runBlocking {
+                gameListAdapter.updateGames(GamesRepository.sortGames())
+            }
+            val toast = Toast.makeText(context, "Games sorted", Toast.LENGTH_SHORT)
+            toast.show()
+
+        }
 
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -120,7 +132,7 @@ class HomeFragment : Fragment() {
     fun onSuccess(games:List<Game>){
         val toast = Toast.makeText(context, "Games found", Toast.LENGTH_SHORT)
         toast.show()
-        gameListAdapter.updateMovies(games)
+        gameListAdapter.updateGames(games)
     }
     fun onError() {
         val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)

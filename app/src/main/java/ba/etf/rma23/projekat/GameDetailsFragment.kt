@@ -1,20 +1,25 @@
 package ba.etf.rma23.projekat
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import com.bumptech.glide.Glide
 import com.example.rma23_19079_videogames.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.squareup.picasso.Picasso
+import kotlinx.coroutines.runBlocking
 
 
 class GameDetailsFragment : Fragment() {
@@ -30,9 +35,12 @@ class GameDetailsFragment : Fragment() {
     private lateinit var gameDescription: TextView
     private lateinit var impressionListView: RecyclerView
     private lateinit var impressionListAdapter: GameImpressionAdapter
-    private lateinit var navigation : BottomNavigationView
+    private lateinit var navigation: BottomNavigationView
+    private lateinit var favouriteButton: ImageButton
+    private lateinit var deleteFavouriteButton: ImageButton
 
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,6 +57,12 @@ class GameDetailsFragment : Fragment() {
         gamePublisher = view.findViewById(R.id.publisher_textview)
         gameGenre = view.findViewById(R.id.genre_textview)
         gameDescription = view.findViewById(R.id.description_textview)
+        favouriteButton = view.findViewById(R.id.sortGamesButton)
+        deleteFavouriteButton = view.findViewById(R.id.deleteFavouriteButton)
+
+
+
+
 
         impressionListView = view.findViewById(R.id.game_list)
         impressionListView.layoutManager = GridLayoutManager(activity, 1)
@@ -56,27 +70,82 @@ class GameDetailsFragment : Fragment() {
         impressionListView.adapter = impressionListAdapter
 
 
-        val id : Int? = arguments?.getInt("game_id")
+        val id: Int? = arguments?.getInt("game_id")
 
         val orientation = resources.configuration.orientation
         if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if(arguments == null){
-                game = GameData.getAll().get(0)
+            if (arguments == null) {
+                runBlocking {
+                    game = AccountGamesRepository.getSavedGames().get(0)
+                }
                 populateDetails()
+
+                favouriteButton.setOnClickListener{
+                    runBlocking {
+                        AccountGamesRepository.saveGame(game)
+                    }
+                    val toast = Toast.makeText(context, "Game saved", Toast.LENGTH_SHORT)
+                    toast.show()
+                }
+
+                deleteFavouriteButton.setOnClickListener {
+                    runBlocking {
+                        AccountGamesRepository.removeGame(game.id)
+                    }
+                    val toast = Toast.makeText(context, "Game deleted", Toast.LENGTH_SHORT)
+                    toast.show()
+                }
+
+
                 impressionListAdapter.updateGames(GameData.getImpressionsOfGame(game.title))
-            }
-            else {
+            } else {
                 game = GameData.getDetails(id!!)!!
                 populateDetails()
+
+                favouriteButton.setOnClickListener{
+                    runBlocking {
+                        AccountGamesRepository.saveGame(game)
+                    }
+                    val toast = Toast.makeText(context, "Game saved", Toast.LENGTH_SHORT)
+                    toast.show()
+
+                }
+
+                deleteFavouriteButton.setOnClickListener {
+                    runBlocking {
+                        AccountGamesRepository.removeGame(game.id)
+                    }
+                    val toast = Toast.makeText(context, "Game deleted", Toast.LENGTH_SHORT)
+                    toast.show()
+                }
 
                 impressionListAdapter.updateGames(GameData.getImpressionsOfGame(game.title))
             }
 
         } else {
 
-            if(arguments != null){
+            if (arguments != null) {
                 game = GameData.getDetails(id!!)!!
                 populateDetails()
+
+                favouriteButton.setOnClickListener{
+                    runBlocking {
+                        AccountGamesRepository.saveGame(game)
+                    }
+
+                    val toast = Toast.makeText(context, "Game saved", Toast.LENGTH_SHORT)
+                    toast.show()
+                }
+
+                deleteFavouriteButton.setOnClickListener {
+                    runBlocking {
+                        AccountGamesRepository.removeGame(game.id)
+                    }
+                    val toast = Toast.makeText(context, "Game deleted", Toast.LENGTH_SHORT)
+                    toast.show()
+                }
+
+
 
                 impressionListAdapter.updateGames(GameData.getImpressionsOfGame(game.title))
             }
@@ -87,13 +156,15 @@ class GameDetailsFragment : Fragment() {
             navigation.menu.getItem(0).isEnabled = true
             navigation.menu.getItem(0).isCheckable = false
 
-            navigation.setOnItemSelectedListener{
-                when(it.itemId){
-                    R.id.homeItem-> {
+            navigation.setOnItemSelectedListener {
+                when (it.itemId) {
+                    R.id.homeItem -> {
                         showHomeScreen(GameData.getDetails(game.id)!!)
                         true
                     }
-                    else -> {true}
+                    else -> {
+                        true
+                    }
                 }
             }
         }
@@ -102,9 +173,10 @@ class GameDetailsFragment : Fragment() {
         return view;
     }
 
-    private fun showHomeScreen(game : Game){
+    private fun showHomeScreen(game: Game) {
         val bundle = bundleOf("game_id" to game.id)
-        requireView().findNavController().navigate(R.id.action_gameDetailsFragment_to_homeFragment,bundle)
+        requireView().findNavController()
+            .navigate(R.id.action_gameDetailsFragment_to_homeFragment, bundle)
     }
 
     private fun populateDetails() {
@@ -116,14 +188,20 @@ class GameDetailsFragment : Fragment() {
         gamePublisher.text = game.publisher
         gameGenre.text = game.genre
         gameDescription.text = game.description
-        if(game.coverImage != ""){
-            Picasso.get().load(game.coverImage).into(gameCoverImage)
-        }
-
+        val id = requireContext().resources.getIdentifier(
+            "error",
+            "drawable",
+            gameCoverImage.context.packageName
+        )
+        Glide.with(gameCoverImage.context)
+            .load("https://${game.coverImage}")
+            .placeholder(R.drawable.game_control)
+            .error(id)
+            .fallback(id)
+            .into(gameCoverImage)
     }
-
-    /*override fun onBackPressed() {
-        val bundle = bundleOf("game_title" to game.title)
-        requireView().findNavController().navigate(R.id.action_gameDetailsFragment_to_homeFragment,bundle)
-    }*/
 }
+
+
+
+

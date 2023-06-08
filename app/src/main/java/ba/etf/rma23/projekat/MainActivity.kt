@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.homeFragment)
         }
 
-        getUpcoming()
+
     }
 
     /*fun getUpcoming( ){
@@ -59,17 +59,6 @@ class MainActivity : AppCompatActivity() {
         }
     }*/
 
-    fun getUpcoming( ){
-        val scope = CoroutineScope(Job() + Dispatchers.Main)
-        // Create a new coroutine on the UI thread
-        runBlocking {
-            // Opcija 1
-            AccountGamesRepository.setHash("50b2f29f-8e82-4e3d-8eea-2425718bfb32")
-            AccountGamesRepository.setAge(2)
-            var lista: List<Game> = AccountGamesRepository.getGamesContainingString("hitman")
-            print(lista)
-        }
-    }
 
 
 }

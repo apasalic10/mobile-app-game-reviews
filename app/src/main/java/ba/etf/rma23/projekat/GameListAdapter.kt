@@ -29,7 +29,7 @@ class GameListAdapter(
         holder.itemView.setOnClickListener{ onItemClicked(games[position]) }
     }
 
-    fun updateMovies(movies: List<Game>) {
+    fun updateGames(movies: List<Game>) {
         this.games = movies
         notifyDataSetChanged()
     }
