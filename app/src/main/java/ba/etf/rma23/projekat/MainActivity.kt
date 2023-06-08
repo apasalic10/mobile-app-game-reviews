@@ -35,29 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    /*fun getUpcoming( ){
-        val scope = CoroutineScope(Job() + Dispatchers.Main)
-        // Create a new coroutine on the UI thread
-        runBlocking {
-            // Opcija 1
-            AccountGamesRepository.setHash("ca0ee672-440b-45b2-8a12-75b80f4fbdd3")
-            val result : List<Game>? = AccountGamesRepository.getSavedGames()
-            for(g: Game in result!!){
-                println(g)
-            }
-        }
-    }*/
-
-    /*fun getUpcoming( ){
-        val scope = CoroutineScope(Job() + Dispatchers.Main)
-        // Create a new coroutine on the UI thread
-        runBlocking {
-            // Opcija 1
-            AccountGamesRepository.setHash("230cb97e-fbfb-4298-87fa-50e1283b893b")
-            AccountGamesRepository.setAge(3)
-            AccountGamesRepository.removeNonSafe()
-        }
-    }*/
 
 
 
