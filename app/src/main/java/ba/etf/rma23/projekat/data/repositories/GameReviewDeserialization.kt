@@ -13,13 +13,12 @@ class GameReviewDeserialization : JsonDeserializer<GameReview>{
         context: JsonDeserializationContext?
     ): GameReview {
         val jsonObject = json?.asJsonObject ?: JsonObject()
-        val id = jsonObject.get("id")?.asInt ?: 0
         val rating = jsonObject.get("rating")?.asInt ?: 0
         val review = jsonObject.get("review")?.asString ?: ""
         val username = jsonObject.get("student")?.asString ?: ""
         val timestamp = jsonObject.get("timestamp")?.asString ?: ""
 
 
-        return GameReview(id,rating,review,0,true,username,timestamp)
+        return GameReview(rating,review,0,true,username,timestamp)
     }
 }

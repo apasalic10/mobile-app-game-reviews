@@ -6,6 +6,7 @@ import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.lang.reflect.Constructor
+import java.util.Random
 
 @Entity
 data class GameReview(
@@ -27,5 +28,11 @@ data class GameReview(
         online: Boolean,
         username: String,
         timestamp: String
-    ) : this(0, rating, review, igdb_id, online, username,timestamp)
+    ) : this(getRandomNumber(20,250000), rating, review, igdb_id, online, username,timestamp)
+}
+
+private fun getRandomNumber(start: Int, end: Int): Int{
+    require(start <= end) {"Invalid range!"}
+
+    return kotlin.random.Random.nextInt(start,end+1)
 }

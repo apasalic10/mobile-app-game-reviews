@@ -81,32 +81,6 @@ object GameReviewsRepository {
         }
     }
 
-    /*
-    return withContext(Dispatchers.IO){
-            try{
-                val response = AccountApiConfig.retrofit.sendReview(gameReview.igdb_id,GameReviewRequest(gameReview.rating,gameReview.review))
-                if(response.isSuccessful){
-                    return@withContext true
-                } else{
-                    val listaOmiljenjih = AccountGamesRepository.getSavedGames()
-                    val game = GamesRepository.getGameById(gameReview.igdb_id)?.get(0)
-
-                    if(!listaOmiljenjih.contains(game)){
-                        if (game != null) {
-                            AccountGamesRepository.saveGame(game)
-                        }
-                    }
-
-
-                    return@withContext false
-
-                }
-            } catch (exception: Exception){
-                exception.printStackTrace()
-                return@withContext false
-            }
-        }
-     */
 
     suspend fun getOfflineReviews(context: Context):List<GameReview>{
 
