@@ -1,11 +1,12 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
     namespace 'com.example.rma23_19079_videogames'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.example.rma23_19079_videogames"
@@ -71,4 +72,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor")
     implementation 'com.github.bumptech.glide:glide:+'
     annotationProcessor 'com.github.bumptech.glide:compiler:+'
+    implementation("androidx.room:room-runtime:+")
+    annotationProcessor "androidx.room:room-compiler:+"
+    implementation("androidx.room:room-ktx:+")
+    kapt("androidx.room:room-compiler:+")
 }

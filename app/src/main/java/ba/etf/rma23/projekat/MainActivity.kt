@@ -6,9 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
-import ba.etf.rma23.projekat.data.repositories.ESRBRating
-import ba.etf.rma23.projekat.data.repositories.GamesRepository
+import ba.etf.rma23.projekat.data.repositories.*
 import com.example.rma23_19079_videogames.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.*
@@ -33,10 +31,8 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+
     }
-
-
-
 
 }
 
