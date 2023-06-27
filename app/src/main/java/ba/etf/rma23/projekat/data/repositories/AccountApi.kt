@@ -30,11 +30,6 @@ interface AccountApi {
         @Path("gid") gid: Int
     )
 
-    @GET("/game/{gid}/gamereviews")
-    suspend fun getReviewsForGame(
-        @Path("gid") gid:Int
-    ):Response<List<GameReview>>
-
     @POST("/account/{aid}/game/{gid}/gamereview")
     suspend fun sendReview(
         @Path("gid") gid: Int,

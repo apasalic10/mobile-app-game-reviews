@@ -8,10 +8,10 @@ import retrofit2.converter.gson.GsonConverterFactory
 object AccountGameReviewApiConfig {
     var baseUrl = "https://rma23ws.onrender.com"
 
-    val retrofit : AccountApi = Retrofit.Builder()
+    val retrofit : AccountApiReview = Retrofit.Builder()
         .baseUrl(baseUrl)
         .addConverterFactory(GsonConverterFactory.create(GsonBuilder().registerTypeAdapter(GameReview::class.java, GameReviewDeserialization()).create()))
         .build()
-        .create(AccountApi::class.java)
+        .create(AccountApiReview::class.java)
 
 }

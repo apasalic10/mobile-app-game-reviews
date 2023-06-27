@@ -30,9 +30,23 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.homeFragment)
         }
 
+    }
 
+
+
+}
+
+/*fun getReviewFromApi():List<GameReview> {
+
+    var result:List<GameReview> = emptyList()
+    runBlocking {
+
+        //u result ce biti spremljene sve offline recenzije
+
+        result = GameReviewsRepository.getReviewsForGame(136335)
 
     }
 
-}
+    return result
+}*/
 
