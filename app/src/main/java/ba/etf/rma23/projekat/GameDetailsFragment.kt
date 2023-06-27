@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,10 +18,12 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import ba.etf.rma23.projekat.data.repositories.GameReview
+import ba.etf.rma23.projekat.data.repositories.GameReviewsRepository
 import com.bumptech.glide.Glide
 import com.example.rma23_19079_videogames.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 
 
 class GameDetailsFragment : Fragment() {
@@ -38,6 +42,10 @@ class GameDetailsFragment : Fragment() {
     private lateinit var navigation: BottomNavigationView
     private lateinit var favouriteButton: ImageButton
     private lateinit var deleteFavouriteButton: ImageButton
+    private lateinit var setReviewButton: Button
+    private lateinit var inputUsername: EditText
+    private lateinit var inputRating: EditText
+    private lateinit var inputReview: EditText
 
 
     @SuppressLint("MissingInflatedId")
@@ -59,7 +67,10 @@ class GameDetailsFragment : Fragment() {
         gameDescription = view.findViewById(R.id.description_textview)
         favouriteButton = view.findViewById(R.id.sortGamesButton)
         deleteFavouriteButton = view.findViewById(R.id.deleteFavouriteButton)
-
+        setReviewButton = view.findViewById<Button>(R.id.buttonImpression)
+        inputUsername = view.findViewById<EditText>(R.id.inputUsername)
+        inputRating = view.findViewById<EditText>(R.id.inputRating)
+        inputReview = view.findViewById<EditText>(R.id.inputReview)
 
 
 
@@ -119,7 +130,46 @@ class GameDetailsFragment : Fragment() {
                     toast.show()
                 }
 
-                impressionListAdapter.updateGames(GameData.getImpressionsOfGame(game.title))
+                setReviewButton.setOnClickListener {
+                    if(inputUsername.text.toString().isEmpty()){
+                        val toast: Toast = Toast.makeText(context, "Username is empty", Toast.LENGTH_SHORT)
+                        toast.show()
+                    }
+                    else if (inputRating.text.toString().isEmpty() && inputReview.text.toString().isEmpty()){
+                        val toast: Toast = Toast.makeText(context, "Rating and Review are empty", Toast.LENGTH_SHORT)
+                        toast.show()
+                    }
+                    else{
+                        if(inputRating.text.toString().isEmpty()){
+                            runBlocking {
+                                GameReviewsRepository.sendReview(requireContext(),GameReview(null,inputReview.text.toString(),game.id,true,inputUsername.text.toString(),""))
+                            }
+                        }
+                        else if(inputReview.text.toString().isEmpty()){
+                            runBlocking {
+                                GameReviewsRepository.sendReview(requireContext(),GameReview(inputRating.text.toString().toInt(),null,game.id,true,inputUsername.text.toString(),""))
+                            }
+                        }
+                        else{
+                            runBlocking {
+                                GameReviewsRepository.sendReview(requireContext(),GameReview(inputRating.text.toString().toInt(),inputReview.text.toString(),game.id,true,inputUsername.text.toString(),""))
+                            }
+                        }
+                        val toast: Toast = Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT)
+                        toast.show()
+                    }
+
+                    runBlocking {
+                        impressionListAdapter.updateGames(mappingImpressions(GameReviewsRepository.getReviewsForGame(game.id)))
+                    }
+
+                }
+
+
+
+                runBlocking {
+                    impressionListAdapter.updateGames(mappingImpressions(GameReviewsRepository.getReviewsForGame(game.id)))
+                }
             }
 
         } else {
@@ -147,7 +197,45 @@ class GameDetailsFragment : Fragment() {
 
 
 
-                impressionListAdapter.updateGames(GameData.getImpressionsOfGame(game.title))
+                setReviewButton.setOnClickListener {
+                    if(inputUsername.text.toString().isEmpty()){
+                        val toast: Toast = Toast.makeText(context, "Username is empty", Toast.LENGTH_SHORT)
+                        toast.show()
+                    }
+                    else if (inputRating.text.toString().isEmpty() && inputReview.text.toString().isEmpty()){
+                        val toast: Toast = Toast.makeText(context, "Rating and Review are empty", Toast.LENGTH_SHORT)
+                        toast.show()
+                    }
+                    else{
+                        if(inputRating.text.toString().isEmpty()){
+                            runBlocking {
+                                GameReviewsRepository.sendReview(requireContext(),GameReview(null,inputReview.text.toString(),game.id,true,inputUsername.text.toString(),""))
+                            }
+                        }
+                        else if(inputReview.text.toString().isEmpty()){
+                            runBlocking {
+                                GameReviewsRepository.sendReview(requireContext(),GameReview(inputRating.text.toString().toInt(),null,game.id,true,inputUsername.text.toString(),""))
+                            }
+                        }
+                        else{
+                            runBlocking {
+                                GameReviewsRepository.sendReview(requireContext(),GameReview(inputRating.text.toString().toInt(),inputReview.text.toString(),game.id,true,inputUsername.text.toString(),""))
+                            }
+                        }
+                        val toast: Toast = Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT)
+                        toast.show()
+                    }
+
+                    runBlocking {
+                        impressionListAdapter.updateGames(mappingImpressions(GameReviewsRepository.getReviewsForGame(game.id)))
+                    }
+
+                }
+
+                runBlocking {
+                    impressionListAdapter.updateGames(mappingImpressions(GameReviewsRepository.getReviewsForGame(game.id)))
+                }
+
             }
 
             navigation = requireActivity().findViewById(R.id.bottom_nav)
@@ -199,6 +287,30 @@ class GameDetailsFragment : Fragment() {
             .error(id)
             .fallback(id)
             .into(gameCoverImage)
+    }
+
+    private fun mappingImpressions(impressionListFromApi: List<GameReview>): ArrayList<UserImpression>{
+        val impressionsList: ArrayList<UserImpression> = ArrayList<UserImpression>()
+
+        for(gameReview: GameReview in impressionListFromApi){
+            if(gameReview.rating == null && gameReview.review != null){
+                impressionsList.add(UserReview(gameReview.username,gameReview.timestamp.toLong(),
+                    gameReview.review!!
+                ))
+            }
+            else if (gameReview.rating != null && gameReview.review == null){
+                impressionsList.add(UserRating(gameReview.username,gameReview.timestamp.toLong(),
+                    gameReview.rating.toString().toDouble()
+                ))
+            }
+            else if(gameReview.rating != null && gameReview.review != null){
+                impressionsList.add(UserRating(gameReview.username,gameReview.timestamp.toLong(),
+                    gameReview.rating.toString().toDouble()
+                ))
+            }
+        }
+
+        return impressionsList
     }
 }
 

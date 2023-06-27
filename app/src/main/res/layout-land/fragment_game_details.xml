@@ -113,6 +113,40 @@
                 android:gravity="center"
                 android:text="TextView" />
 
+            <EditText
+                android:id="@+id/inputUsername"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:ems="10"
+                android:hint="Username"
+                android:inputType="textPersonName"
+                android:textSize="10dp" />
+
+            <EditText
+                android:id="@+id/inputRating"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:ems="10"
+                android:hint="Rating"
+                android:inputType="textPersonName"
+                android:textSize="10dp" />
+
+            <EditText
+                android:id="@+id/inputReview"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:ems="10"
+                android:hint="Review"
+                android:inputType="textPersonName"
+                android:textSize="10dp" />
+
+            <Button
+                android:id="@+id/buttonImpression"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:text="Dodaj recenziju"
+                android:textSize="10dp" />
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/game_list"
                 android:layout_width="match_parent"
