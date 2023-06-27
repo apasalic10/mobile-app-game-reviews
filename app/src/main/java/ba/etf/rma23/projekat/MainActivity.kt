@@ -30,6 +30,20 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.homeFragment)
         }
 
+        //insertOneReview()
+
+    }
+
+
+    private fun insertOneReview() {
+
+        var result:List<GameReview> = emptyList()
+        runBlocking {
+            val db = AppDatabase.getInstance(context = this@MainActivity)
+            db.gameReviewDao().insertGameReview(GameReview(4,"test",2153,true,"",""))
+
+        }
+
     }
 
 
